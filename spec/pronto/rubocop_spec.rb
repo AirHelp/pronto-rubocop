@@ -27,6 +27,23 @@ module Pronto
           it { should_not be_nil }
         end
       end
+
+      context 'when severity is customized' do
+        let(:rubocop_customization) { {} }
+        let(:severity) { :warning }
+
+        before { rubocop.instance_variable_set(:@runner_config, rubocop_customization) }
+
+        context 'when not specified' do
+          it { should eq :warning }
+        end
+
+        context 'when overriden' do
+          let(:rubocop_customization) { { 'severities' => { 'warning' => 'info' } } }
+
+          it { should eq :info }
+        end
+      end
     end
   end
 end
